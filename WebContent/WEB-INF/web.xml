@@ -9,4 +9,12 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  <servlet>
+    <servlet-name>Subtitles</servlet-name>
+    <servlet-class>com.flkoliv.subtitles.servlets.Subtitles</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Subtitles</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
 </web-app>
