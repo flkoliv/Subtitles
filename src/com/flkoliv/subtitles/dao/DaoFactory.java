@@ -17,18 +17,19 @@ public class DaoFactory {
 
     public static DaoFactory getInstance() {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("org.mariadb.jdbc.Driver");
         } catch (ClassNotFoundException e) {
 
-        }
+        } 
 
         DaoFactory instance = new DaoFactory(
-                "jdbc:mysql://localhost:3306/javaee", "root", "");
+                "jdbc:mariadb://localhost:3306/subtitles", "root", "LoremIpsum05");
         return instance;
     }
 
     public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(url, username, password);
+    	//return DriverManager.getConnection("jdbc:mariadb:localhost:3306/subtitles?user=root&password=LoremIpsum05");
     }
 
     // Récupération du Dao

@@ -7,6 +7,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.flkoliv.subtitles.beans.Film;
+import com.flkoliv.subtitles.dao.DaoFactory;
+import com.flkoliv.subtitles.dao.FilmDao;
 import com.flkoliv.subtitles.utilities.Upload;
 
 /**
@@ -15,7 +18,7 @@ import com.flkoliv.subtitles.utilities.Upload;
 @WebServlet("/Subtitles")
 public class Subtitles extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	private FilmDao filmDao;   
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -24,6 +27,10 @@ public class Subtitles extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
+    public void init() throws ServletException {
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        this.filmDao = daoFactory.getFilmDao();
+    }
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -41,8 +48,19 @@ public class Subtitles extends HttpServlet {
 		
 		if (request.getParameter("submit").equals("upload")) {//si clic sur upload
 			String nomfilm = request.getParameter("nomFilm");
+			
+			Film film = new Film();
+			film.setNom(request.getParameter("nomFilm"));
+			film.setLangue(request.getParameter("langue"));
+			film.setNomFichier(request.getParameter("nomFilm"));
+			filmDao.ajouter(film);
+			
+			
+			
+			
 			request = Upload.upload(request);
 			request.setAttribute("valeur", "nom film :"+ nomfilm);
+			
 		}
 		
 		this.getServletContext().getRequestDispatcher("/WEB-INF/subtitles.jsp").forward(request, response);

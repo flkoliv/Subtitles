@@ -24,7 +24,7 @@ public class FilmDaoImpl implements FilmDao {
             preparedStatement = connexion.prepareStatement("INSERT INTO films(nom, langue, fichier) VALUES(?, ?, ?);");
             preparedStatement.setString(1, film.getNom());
             preparedStatement.setString(2, film.getLangue());
-            preparedStatement.setString(2, film.getNomFichier());
+            preparedStatement.setString(3, film.getNomFichier());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
