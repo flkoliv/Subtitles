@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.flkoliv.subtitles.utilities.Upload;
+
 /**
  * Servlet implementation class Subtitles
  */
@@ -36,7 +38,16 @@ public class Subtitles extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+		
+		if (request.getParameter("submit").equals("upload")) {//si clic sur upload
+			String nomfilm = request.getParameter("nomFilm");
+			request = Upload.upload(request);
+			request.setAttribute("valeur", "nom film :"+ nomfilm);
+		}
+		
+		this.getServletContext().getRequestDispatcher("/WEB-INF/subtitles.jsp").forward(request, response);
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+		
 	}
 
 }
