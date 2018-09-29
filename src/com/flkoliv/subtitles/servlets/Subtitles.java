@@ -36,6 +36,7 @@ public class Subtitles extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		request.setAttribute("listFilms", filmDao.lister());
 		this.getServletContext().getRequestDispatcher("/WEB-INF/subtitles.jsp").forward(request, response);
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
@@ -47,25 +48,20 @@ public class Subtitles extends HttpServlet {
 		// TODO Auto-generated method stub
 		
 		if (request.getParameter("submit").equals("upload")) {//si clic sur upload
-			String nomfilm = request.getParameter("nomFilm");
-			
-			Film film = new Film();
-			film.setNom(request.getParameter("nomFilm"));
-			film.setLangue(request.getParameter("langue"));
-			film.setNomFichier(request.getParameter("nomFilm"));
+			String cheminFichier = Upload.upload(request); //upload le fichier sur le serveur
+			Film film = new Film( request.getParameter("nomFilm"), request.getParameter("langue"),cheminFichier);
 			filmDao.ajouter(film);
 			
-			
-			
-			
-			request = Upload.upload(request);
-			request.setAttribute("valeur", "nom film :"+ nomfilm);
-			
+			request.setAttribute("valeur", "nom film :"+ request.getParameter("nomFilm"));
 		}
 		
+		
+		request.setAttribute("listFilms", filmDao.lister());
 		this.getServletContext().getRequestDispatcher("/WEB-INF/subtitles.jsp").forward(request, response);
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 		
 	}
+	
+	
 
 }

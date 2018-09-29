@@ -23,7 +23,7 @@ public class FilmDaoImpl implements FilmDao {
             connexion = daoFactory.getConnection();
             preparedStatement = connexion.prepareStatement("INSERT INTO films(nom, langue, fichier) VALUES(?, ?, ?);");
             preparedStatement.setString(1, film.getNom());
-            preparedStatement.setString(2, film.getLangue());
+            preparedStatement.setString(2, film.getLangueOriginale());
             preparedStatement.setString(3, film.getNomFichier());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -47,8 +47,8 @@ public class FilmDaoImpl implements FilmDao {
                 Film film = new Film();
                 film.setId(resultat.getInt("id"));
                 film.setNom(resultat.getString("nom"));
-                film.setLangue(resultat.getString("langue"));
-                film.setLangue(resultat.getString("fichier"));
+                film.setLangueOriginale(resultat.getString("langue"));
+                film.setLangueOriginale(resultat.getString("fichier"));
                 films.add(film);
             }
         } catch (SQLException e) {

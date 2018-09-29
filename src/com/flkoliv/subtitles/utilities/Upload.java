@@ -15,7 +15,7 @@ public class Upload {
 	public static final int TAILLE_TAMPON = 10240;
 	public static final String CHEMIN_FICHIERS = "C:\\Users\\olivi\\eclipse-workspace\\Subtitles\\upload\\"; // A changer
 	
-	public static HttpServletRequest upload(HttpServletRequest request) throws IOException, ServletException {
+	public static String upload(HttpServletRequest request) throws IOException, ServletException {
 	// On récupère le champ description comme d'habitude
     String description = request.getParameter("description");
     request.setAttribute("description", description );
@@ -39,7 +39,7 @@ public class Upload {
         request.setAttribute(nomChamp, nomFichier);
     }
 
-    return request;
+    return CHEMIN_FICHIERS+nomFichier;
 }
 
 private  static void ecrireFichier( Part part, String nomFichier, String chemin ) throws IOException {

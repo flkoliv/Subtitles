@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,11 +12,11 @@
 	<form method="post" action="">
     	<label for="nom">Choix film : </label>
         <select name="film">
-        	<option value="film1">Film1</option>
-        	<option value="film2">Film2</option>
-        	<option value="film3">Film3</option>
+        	<c:forEach items="${ listFilms }" var="film" varStatus="status">
+    			<option value="<c:out value="${ film.nom }" />">N°<c:out value="${ film.nom }" /></option>
+			</c:forEach>
         </select>
-        <input type="submit" value="ok" />
+        <input type="submit" value="ok" name="submit" id="submit" value="choixFichier"/>
 	</form>
 	<form method="post" action="" enctype="multipart/form-data">
     	<label for="nom">Nouveau film : </label>
@@ -26,5 +27,6 @@
         
 	</form>
 	${ !empty valeur ? valeur: 'pas de valeur !' }
+	
 </body>
 </html> 
