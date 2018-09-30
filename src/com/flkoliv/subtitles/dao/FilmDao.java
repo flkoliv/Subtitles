@@ -8,4 +8,5 @@ public interface FilmDao {
     void ajouter( Film utilisateur );
     List<Film> lister();
     public boolean existe(Film film);
+	void charger(Film film);
 }

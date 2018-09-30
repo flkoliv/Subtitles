@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.flkoliv.subtitles.beans.Film;
+import com.flkoliv.subtitles.beans.Phrase;
 
 public class FilmDaoImpl implements FilmDao {
 
@@ -116,6 +117,44 @@ public class FilmDaoImpl implements FilmDao {
             e.printStackTrace();
         }
 		return false;
+	}
+
+	@Override
+	public void charger(Film film) {
+		Connection connexion = null;
+        PreparedStatement preparedStatement = null;
+		try {
+			connexion = daoFactory.getConnection();
+            preparedStatement = connexion.prepareStatement("SELECT * FROM films INNER JOIN langues ON films.id_langue = langues.id_langue WHERE films.nom=?");
+            preparedStatement.setString(1, film.getNom());
+            ResultSet resultat = preparedStatement.executeQuery();
+            resultat.next();
+            film.setCheminFichier(resultat.getString("fichier"));
+            film.setId(resultat.getInt("id_film"));
+            film.setIdLangueOriginale(resultat.getInt("id_langue"));
+            film.setLangueOriginale(resultat.getString("nom_langue"));
+            preparedStatement = connexion.prepareStatement("SELECT * FROM phrases INNER JOIN films ON phrases.id_film = films.id_film WHERE films.nom=? AND phrases.id_langue=? ORDER BY numero ASC");
+            preparedStatement.setString(1, film.getNom());
+            preparedStatement.setInt(2, film.getIdLangueOriginale());
+            System.out.println(preparedStatement.toString());
+            resultat = preparedStatement.executeQuery();	
+            ArrayList<Phrase> phrases = new ArrayList<Phrase>();
+            while ( resultat.next() ) {
+            	Phrase p = new Phrase();
+            	p.setMinutageDebut(resultat.getString("debut"));
+            	p.setMinutageFin(resultat.getString("fin"));
+            	p.setNumero(resultat.getInt("numero"));
+            	p.setTexteOriginal(resultat.getString("phrase"));
+            	phrases.add(p);
+            	System.out.println(p.toString());
+            }
+            film.setPhrases(phrases);		
+            
+		}catch (SQLException e) {
+            e.printStackTrace();
+        }
+	
+		
 	}
 }
 

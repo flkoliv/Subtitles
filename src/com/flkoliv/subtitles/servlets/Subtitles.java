@@ -18,7 +18,8 @@ import com.flkoliv.subtitles.utilities.Upload;
 @WebServlet("/Subtitles")
 public class Subtitles extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private FilmDao filmDao;   
+	private FilmDao filmDao; 
+	private Film film;
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -47,17 +48,31 @@ public class Subtitles extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
+		request.setAttribute("listFilms", filmDao.lister());
+		
+		
 		if (request.getParameter("submit").equals("upload")) {//si clic sur upload
 			String cheminFichier = Upload.upload(request); //upload le fichier sur le serveur
-			Film film = new Film( request ,cheminFichier);
-			
+			film = new Film( request ,cheminFichier);
 			request.setAttribute("valeur", "nom film :"+ request.getParameter("nomFilm"));
+			request.setAttribute("film", film);
+			this.getServletContext().getRequestDispatcher("/WEB-INF/traitement.jsp").forward(request, response);
+			response.getWriter().append("Served at: ").append(request.getContextPath());
+			
 		}
 		
 		
-		request.setAttribute("listFilms", filmDao.lister());
-		this.getServletContext().getRequestDispatcher("/WEB-INF/subtitles.jsp").forward(request, response);
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		else if (request.getParameter("submit").equals("choixFichier")) {//si clic sur choix film
+	
+			film = new Film(request);
+			request.setAttribute("film", film);
+			this.getServletContext().getRequestDispatcher("/WEB-INF/traitement.jsp").forward(request, response);
+			/*request.setAttribute("valeur", "nom film :"+ request.getParameter("nomFilm"));
+			this.getServletContext().getRequestDispatcher("/WEB-INF/subtitles.jsp").forward(request, response);*/
+			response.getWriter().append("Served at: ").append(request.getContextPath());
+		}
+		
+		
 		
 	}
 	

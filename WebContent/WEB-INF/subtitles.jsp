@@ -16,7 +16,7 @@
     			<option value="<c:out value="${ film.nom }" />">N°<c:out value="${ film.nom }" /></option>
 			</c:forEach>
         </select>
-        <input type="submit" value="ok" name="submit" id="submit" value="choixFichier"/>
+        <input type="submit" name="submit" id="submit" value="choixFichier"/>
 	</form>
 	<form method="post" action="" enctype="multipart/form-data">
     	<label for="nom">Nouveau film : </label>

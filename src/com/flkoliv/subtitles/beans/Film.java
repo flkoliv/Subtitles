@@ -18,6 +18,7 @@ public class Film {
 	private int id;
 	private String nom;
 	private String langueOriginale;
+	private int idLangueOriginale;
 	private String langueTraduction;
 	private String cheminFichier;
 	private ArrayList<Phrase> phrases = new ArrayList<Phrase>();
@@ -26,7 +27,7 @@ public class Film {
 	private FilmDao filmDao; 
 	
 
-	public Film(String nom, String langueOriginale,String cheminFichier ) {
+	/*public Film(String nom, String langueOriginale,String cheminFichier ) {
 		this.nom = nom;
 		this.langueOriginale = langueOriginale;
 		this.cheminFichier = cheminFichier;
@@ -35,8 +36,16 @@ public class Film {
 		DaoFactory daoFactory = DaoFactory.getInstance();
         this.filmDao = daoFactory.getFilmDao();
         this.filmDao.ajouter(this);
-	}
+	}*/
 	
+	public int getIdLangueOriginale() {
+		return idLangueOriginale;
+	}
+
+	public void setIdLangueOriginale(int idLangueOriginale) {
+		this.idLangueOriginale = idLangueOriginale;
+	}
+
 	public Film(HttpServletRequest request,String cheminFichier) {
 		
 		
@@ -53,6 +62,18 @@ public class Film {
         	request.setAttribute("erreur","Le film existe déjà !");
         }
         
+	}
+	
+	public Film(HttpServletRequest request) {
+		DaoFactory daoFactory = DaoFactory.getInstance();
+        this.filmDao = daoFactory.getFilmDao();
+		this.nom = request.getParameter("film");
+		if (this.filmDao.existe(this)) {
+			
+	        this.filmDao.charger(this);
+        }else {
+        	request.setAttribute("erreur","Le film n'existe pas !");
+        }
 	}
 	
 	public Film() {
