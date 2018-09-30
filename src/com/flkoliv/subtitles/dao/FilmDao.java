@@ -7,4 +7,5 @@ import java.util.List;
 public interface FilmDao {
     void ajouter( Film utilisateur );
     List<Film> lister();
+    public boolean existe(Film film);
 }

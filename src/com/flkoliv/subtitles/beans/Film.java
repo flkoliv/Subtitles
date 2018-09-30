@@ -1,6 +1,12 @@
 package com.flkoliv.subtitles.beans;
 
 import java.util.ArrayList;
+
+import javax.servlet.http.HttpServletRequest;
+
+import com.flkoliv.subtitles.dao.DaoFactory;
+import com.flkoliv.subtitles.dao.FilmDao;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -17,6 +23,7 @@ public class Film {
 	private ArrayList<Phrase> phrases = new ArrayList<Phrase>();
 	private ArrayList<Phrase> phrasesTraduites = new ArrayList<Phrase>();
 	
+	private FilmDao filmDao; 
 	
 
 	public Film(String nom, String langueOriginale,String cheminFichier ) {
@@ -25,6 +32,27 @@ public class Film {
 		this.cheminFichier = cheminFichier;
 		creerPhrases();
 		creerPhrasesTraduites();
+		DaoFactory daoFactory = DaoFactory.getInstance();
+        this.filmDao = daoFactory.getFilmDao();
+        this.filmDao.ajouter(this);
+	}
+	
+	public Film(HttpServletRequest request,String cheminFichier) {
+		
+		
+		this.nom = request.getParameter("nomFilm");
+		this.langueOriginale = request.getParameter("langue");
+		this.cheminFichier = cheminFichier;
+		creerPhrases();
+		creerPhrasesTraduites();
+		DaoFactory daoFactory = DaoFactory.getInstance();
+        this.filmDao = daoFactory.getFilmDao();
+        if (!this.filmDao.existe(this)) {
+        	this.filmDao.ajouter(this);
+        }else {
+        	request.setAttribute("erreur","Le film existe déjà !");
+        }
+        
 	}
 	
 	public Film() {
@@ -100,7 +128,8 @@ public class Film {
 		            	compteur = 0;
 		            }
 		        	if (compteur == 1) {
-		            	phrase.setNumero(Integer.parseInt(line));
+          	           	line=line.replaceAll("[\\W]","");
+		            	phrase.setNumero(Integer.parseInt(line.trim()));
 		            }else if (compteur == 2 ) {
 		            	String[] t = line.split(" --> ");
 		            	phrase.setMinutageDebut(t[0]);

@@ -27,6 +27,7 @@
         
 	</form>
 	${ !empty valeur ? valeur: 'pas de valeur !' }
+	${ !empty erreur ? erreur: '' }
 	
 </body>
 </html> 

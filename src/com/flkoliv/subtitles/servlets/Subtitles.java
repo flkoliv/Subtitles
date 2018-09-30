@@ -49,8 +49,7 @@ public class Subtitles extends HttpServlet {
 		
 		if (request.getParameter("submit").equals("upload")) {//si clic sur upload
 			String cheminFichier = Upload.upload(request); //upload le fichier sur le serveur
-			Film film = new Film( request.getParameter("nomFilm"), request.getParameter("langue"),cheminFichier);
-			filmDao.ajouter(film);
+			Film film = new Film( request ,cheminFichier);
 			
 			request.setAttribute("valeur", "nom film :"+ request.getParameter("nomFilm"));
 		}
