@@ -9,4 +9,6 @@ public interface FilmDao {
     List<Film> lister();
     public boolean existe(Film film);
 	void charger(Film film);
+	void sauvegarder(Film film);
+	List<String> listerLangues();
 }

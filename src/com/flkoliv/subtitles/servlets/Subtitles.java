@@ -36,8 +36,8 @@ public class Subtitles extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		request.setAttribute("listFilms", filmDao.lister());
+		request.setAttribute("listLangues", filmDao.listerLangues());
 		this.getServletContext().getRequestDispatcher("/WEB-INF/subtitles.jsp").forward(request, response);
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
@@ -46,11 +46,7 @@ public class Subtitles extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		
 		request.setAttribute("listFilms", filmDao.lister());
-		
-		
 		if (request.getParameter("submit").equals("upload")) {//si clic sur upload
 			String cheminFichier = Upload.upload(request); //upload le fichier sur le serveur
 			film = new Film( request ,cheminFichier);
@@ -58,24 +54,15 @@ public class Subtitles extends HttpServlet {
 			request.setAttribute("film", film);
 			this.getServletContext().getRequestDispatcher("/WEB-INF/traitement.jsp").forward(request, response);
 			response.getWriter().append("Served at: ").append(request.getContextPath());
-			
-		}
-		
-		
-		else if (request.getParameter("submit").equals("choixFichier")) {//si clic sur choix film
-	
+		}else if (request.getParameter("submit").equals("choixFichier")) {//si clic sur choix film
 			film = new Film(request);
 			request.setAttribute("film", film);
 			this.getServletContext().getRequestDispatcher("/WEB-INF/traitement.jsp").forward(request, response);
-			/*request.setAttribute("valeur", "nom film :"+ request.getParameter("nomFilm"));
-			this.getServletContext().getRequestDispatcher("/WEB-INF/subtitles.jsp").forward(request, response);*/
 			response.getWriter().append("Served at: ").append(request.getContextPath());
+		}else if (request.getParameter("submit").equals("sauvegarder")) {//si clic sur sauvegarder
+			film.sauvegarder(request);
+			System.out.println("Sauvegarde");
+			doGet(request,response);
 		}
-		
-		
-		
 	}
-	
-	
-
 }

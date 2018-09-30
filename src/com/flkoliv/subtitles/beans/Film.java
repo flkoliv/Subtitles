@@ -20,23 +20,11 @@ public class Film {
 	private String langueOriginale;
 	private int idLangueOriginale;
 	private String langueTraduction;
+	private int idLangueTraduction;
 	private String cheminFichier;
 	private ArrayList<Phrase> phrases = new ArrayList<Phrase>();
-	private ArrayList<Phrase> phrasesTraduites = new ArrayList<Phrase>();
 	
 	private FilmDao filmDao; 
-	
-
-	/*public Film(String nom, String langueOriginale,String cheminFichier ) {
-		this.nom = nom;
-		this.langueOriginale = langueOriginale;
-		this.cheminFichier = cheminFichier;
-		creerPhrases();
-		creerPhrasesTraduites();
-		DaoFactory daoFactory = DaoFactory.getInstance();
-        this.filmDao = daoFactory.getFilmDao();
-        this.filmDao.ajouter(this);
-	}*/
 	
 	public int getIdLangueOriginale() {
 		return idLangueOriginale;
@@ -47,13 +35,10 @@ public class Film {
 	}
 
 	public Film(HttpServletRequest request,String cheminFichier) {
-		
-		
 		this.nom = request.getParameter("nomFilm");
 		this.langueOriginale = request.getParameter("langue");
 		this.cheminFichier = cheminFichier;
 		creerPhrases();
-		creerPhrasesTraduites();
 		DaoFactory daoFactory = DaoFactory.getInstance();
         this.filmDao = daoFactory.getFilmDao();
         if (!this.filmDao.existe(this)) {
@@ -61,16 +46,15 @@ public class Film {
         }else {
         	request.setAttribute("erreur","Le film existe déjà !");
         }
-        
 	}
 	
 	public Film(HttpServletRequest request) {
 		DaoFactory daoFactory = DaoFactory.getInstance();
         this.filmDao = daoFactory.getFilmDao();
 		this.nom = request.getParameter("film");
+		this.langueTraduction = request.getParameter("langueDestination");
 		if (this.filmDao.existe(this)) {
-			
-	        this.filmDao.charger(this);
+			 this.filmDao.charger(this);
         }else {
         	request.setAttribute("erreur","Le film n'existe pas !");
         }
@@ -79,7 +63,6 @@ public class Film {
 	public Film() {
 		
 	}
-	
 	
 	public int getId() {
 		return id;
@@ -105,6 +88,13 @@ public class Film {
 	public void setLangueTraduction(String langueTraduction) {
 		this.langueTraduction = langueTraduction;
 	}
+	public int getIdLangueTraduction() {
+		return idLangueTraduction;
+	}
+
+	public void setIdLangueTraduction(int idLangueTraduction) {
+		this.idLangueTraduction = idLangueTraduction;
+	}
 	public String getNomFichier() {
 		return cheminFichier;
 	}
@@ -123,13 +113,7 @@ public class Film {
 	public void setCheminFichier(String cheminFichier) {
 		this.cheminFichier = cheminFichier;
 	}
-	public ArrayList<Phrase> getPhrasesTraduites() {
-		return phrasesTraduites;
-	}
-
-	public void setPhrasesTraduites(ArrayList<Phrase> phrasesTraduites) {
-		this.phrasesTraduites = phrasesTraduites;
-	}
+	
 	
 	private void creerPhrases() {
 		try
@@ -178,14 +162,19 @@ public class Film {
 		}
 	}
 	
-	private void creerPhrasesTraduites() {
-		for(int i = 0; i < phrases.size(); i++) {
-			Phrase p = new Phrase();
-			p.setNumero(phrases.get(i).getNumero());
-			p.setMinutageDebut(phrases.get(i).getMinutageDebut());
-			p.setMinutageFin(phrases.get(i).getMinutageFin());
-			phrasesTraduites.add(p);
-	    }    
+	
+	public void sauvegarder(HttpServletRequest request) {
+		DaoFactory daoFactory = DaoFactory.getInstance();
+        this.filmDao = daoFactory.getFilmDao();
+        for(int i = 0; i < phrases.size(); i++) {
+        	int j = phrases.get(i).getNumero();
+        	phrases.get(i).setTexteTraduit(request.getParameter("txtTraduit"+j));
+        	System.out.println(phrases.get(i).getTexteOriginal());
+        	System.out.println(phrases.get(i).getTexteTraduit());
+        }
+        this.setIdLangueTraduction(2);//ATTENTION POUR TEST
+        filmDao.sauvegarder(this);
+		
 	}
 	
 	
