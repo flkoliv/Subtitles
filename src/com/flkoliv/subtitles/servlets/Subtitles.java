@@ -47,21 +47,26 @@ public class Subtitles extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setAttribute("listFilms", filmDao.lister());
+		request.setCharacterEncoding("UTF-8");
 		if (request.getParameter("submit").equals("upload")) {//si clic sur upload
 			String cheminFichier = Upload.upload(request); //upload le fichier sur le serveur
 			film = new Film( request ,cheminFichier);
-			request.setAttribute("valeur", "nom film :"+ request.getParameter("nomFilm"));
-			request.setAttribute("film", film);
-			this.getServletContext().getRequestDispatcher("/WEB-INF/traitement.jsp").forward(request, response);
-			response.getWriter().append("Served at: ").append(request.getContextPath());
+			doGet(request,response);
 		}else if (request.getParameter("submit").equals("choixFichier")) {//si clic sur choix film
 			film = new Film(request);
-			request.setAttribute("film", film);
-			this.getServletContext().getRequestDispatcher("/WEB-INF/traitement.jsp").forward(request, response);
-			response.getWriter().append("Served at: ").append(request.getContextPath());
+			if (film.getIdLangueOriginale()==film.getIdLangueTraduction()) {
+				request.setAttribute("message", "Vous avez choisi la même langue que la langue originale");
+				doGet(request,response);
+			}else {
+				request.setAttribute("film", film);
+				this.getServletContext().getRequestDispatcher("/WEB-INF/traitement.jsp").forward(request, response);
+				response.getWriter().append("Served at: ").append(request.getContextPath());
+				
+			}
+			
 		}else if (request.getParameter("submit").equals("sauvegarder")) {//si clic sur sauvegarder
 			film.sauvegarder(request);
-			System.out.println("Sauvegarde");
+			request.setAttribute("message", "Sauvegarde effectuée");
 			doGet(request,response);
 		}
 	}

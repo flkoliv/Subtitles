@@ -25,17 +25,17 @@
 			</c:forEach>
         </select>
         <input type="submit" name="submit" id="submit" value="choixFichier"/>
+        <input type="submit" name="submit" id="submit" value="Télécharger"/>
 	</form>
 	<form method="post" action="" enctype="multipart/form-data">
     	<label for="nom">Nouveau film : </label>
-        <input type="text" name="nomFilm" id="nomFilm" placeholder="nom film">
-        <input type="file" name="fichierFilm" id="fichierFilm" accept=".srt" placeholder="fichier film"/>
-        <input type="text" name="langue" id="langue" placeholder="langue">
+        <input type="text" name="nomFilm" id="nomFilm" placeholder="nom film" required>
+        <input type="file" name="fichierFilm" id="fichierFilm" accept=".srt" placeholder="fichier film" required/>
+        <input type="text" name="langue" id="langue" placeholder="langue" required>
         <input type="submit" name="submit" id="submit" value="upload" />
         
 	</form>
-	${ !empty valeur ? valeur: 'pas de valeur !' }
-	${ !empty erreur ? erreur: '' }
+	${ !empty message ? message: '' }
 	
 </body>
 </html> 

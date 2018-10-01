@@ -43,8 +43,9 @@ public class Film {
         this.filmDao = daoFactory.getFilmDao();
         if (!this.filmDao.existe(this)) {
         	this.filmDao.ajouter(this);
+        	request.setAttribute("message","Le nouveau fichier a été chargé !");
         }else {
-        	request.setAttribute("erreur","Le film existe déjà !");
+        	request.setAttribute("message","Le film existe déjà !");
         }
 	}
 	
@@ -56,7 +57,7 @@ public class Film {
 		if (this.filmDao.existe(this)) {
 			 this.filmDao.charger(this);
         }else {
-        	request.setAttribute("erreur","Le film n'existe pas !");
+        	request.setAttribute("message","Le film n'existe pas !");
         }
 	}
 	
@@ -172,9 +173,7 @@ public class Film {
         	System.out.println(phrases.get(i).getTexteOriginal());
         	System.out.println(phrases.get(i).getTexteTraduit());
         }
-        this.setIdLangueTraduction(2);//ATTENTION POUR TEST
         filmDao.sauvegarder(this);
-		
 	}
 	
 	

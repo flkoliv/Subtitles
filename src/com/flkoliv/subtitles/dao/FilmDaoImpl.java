@@ -123,7 +123,7 @@ public class FilmDaoImpl implements FilmDao {
 	public void charger(Film film) {
 		Connection connexion = null;
         PreparedStatement preparedStatement = null;
-		try {
+        try {
 			connexion = daoFactory.getConnection();
             preparedStatement = connexion.prepareStatement("SELECT * FROM films INNER JOIN langues ON films.id_langue = langues.id_langue WHERE films.nom=?");
             preparedStatement.setString(1, film.getNom());
@@ -133,7 +133,7 @@ public class FilmDaoImpl implements FilmDao {
             film.setId(resultat.getInt("id_film"));
             film.setIdLangueOriginale(resultat.getInt("id_langue"));
             film.setLangueOriginale(resultat.getString("nom_langue"));
-            connexion = daoFactory.getConnection();
+          
             preparedStatement = connexion.prepareStatement("SELECT * FROM langues  WHERE nom_langue=?");
             preparedStatement.setString(1, film.getLangueTraduction());
             resultat = preparedStatement.executeQuery();
@@ -160,13 +160,12 @@ public class FilmDaoImpl implements FilmDao {
             	if (resultat.getInt("id_langue")== film.getIdLangueTraduction()) {
             		for (int i=0;i<phrases.size();i++) {
             			if (phrases.get(i).getNumero()==resultat.getInt("numero")) {
-            				phrases.get(i).setTexteTraduit(resultat.getString("phrase"));
+            				phrases.get(i).setTexteTraduit(resultat.getString("phrase").trim());
             			}
             		}
             	}
             }
             film.setPhrases(phrases);
-            		
             
 		}catch (SQLException e) {
             e.printStackTrace();
@@ -177,12 +176,12 @@ public class FilmDaoImpl implements FilmDao {
 	public void sauvegarder(Film film) {
 		Connection connexion = null;
         PreparedStatement preparedStatement = null;
+        
         try {
         	connexion = daoFactory.getConnection();
         	preparedStatement = connexion.prepareStatement("SELECT * FROM phrases WHERE id_film=? AND id_langue=?");
         	preparedStatement.setInt(1, film.getId());
         	preparedStatement.setInt(2, film.getIdLangueTraduction());
-        	
         	ResultSet resultat = preparedStatement.executeQuery();
         	boolean existe = false;
         	for (int i = 0 ; i<film.getPhrases().size();i++) {

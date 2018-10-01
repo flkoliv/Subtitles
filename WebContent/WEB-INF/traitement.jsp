@@ -8,7 +8,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h1>Traduction du film ${film.nom}</h1>
+<h1>Traduction du film ${film.nom} de ${film.langueOriginale } vers ${film.langueTraduction }</h1>
 
 
 <form method="post" action="">
@@ -19,7 +19,7 @@
 			<p>Début : <c:out value="${phrase.minutageDebut}" /> Fin : <c:out value="${phrase.minutageFin}" /></p>
 			
 			<textarea name="txtOriginal" id="txtOriginal" cols="40" rows="2" disabled><c:out value="${phrase.texteOriginal}" /> </textarea>
-			<textarea name="txtTraduit<c:out value="${ phrase.numero }" />" id="txtTraduit<c:out value="${ phrase.numero }" />" cols="40" rows="2"><c:out value="${phrase.texteTraduit}" /> </textarea>
+			<textarea name="txtTraduit<c:out value="${ phrase.numero }" />" id="txtTraduit<c:out value="${ phrase.numero }" />" cols="40" rows="2"><c:out value="${phrase.texteTraduit}" /></textarea>
 			
 		</fieldset>
 		
