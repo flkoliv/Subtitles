@@ -15,7 +15,7 @@ import com.flkoliv.subtitles.utilities.Upload;
 /**
  * Servlet implementation class Subtitles
  */
-@WebServlet("/Subtitles")
+@WebServlet("/Subtitles/sub")
 public class Subtitles extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private FilmDao filmDao; 
@@ -64,7 +64,7 @@ public class Subtitles extends HttpServlet {
 				
 			}
 			
-		}else if (request.getParameter("submit").equals("sauvegarder")) {//si clic sur sauvegarder
+		}else if (request.getParameter("submit").equals("Sauvegarder")) {//si clic sur sauvegarder
 			film.sauvegarder(request);
 			request.setAttribute("message", "Sauvegarde effectuée");
 			doGet(request,response);

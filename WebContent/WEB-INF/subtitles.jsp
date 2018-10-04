@@ -5,6 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" media="screen" type="text/css" title="css" href="/Subtitles/ressources/style.css" />
 <title>Subtitles Translate</title>
 </head>
 <body>
