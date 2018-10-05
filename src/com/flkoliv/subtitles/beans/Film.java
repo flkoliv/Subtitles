@@ -11,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;;
 
 public class Film {
@@ -176,5 +177,33 @@ public class Film {
         filmDao.sauvegarder(this);
 	}
 	
+	public void creerFichier() {
+		final String chemin = "C:\\Users\\olivi\\eclipse-workspace\\Subtitles\\upload\\txt.txt";
+        final File fichier =new File(chemin); 
+        try {
+            // Creation du fichier
+            fichier .createNewFile();
+            // creation d'un writer (un écrivain)
+            final FileWriter writer = new FileWriter(fichier);
+            try {
+            	int j = 1;
+            	for(int i = 0; i < phrases.size(); i++) {
+            		if (!phrases.get(i).getTexteTraduit().equals("")) {
+            			writer.write(j+"\n");
+            			writer.write(phrases.get(i).getMinutageDebut()+" --> "+phrases.get(i).getMinutageFin()+"\n");
+                        writer.write(phrases.get(i).getTexteTraduit()+"\n"+"\n");
+                        j++;
+            		}
+            	
+            	}
+            	
+            } finally {
+                // quoiqu'il arrive, on ferme le fichier
+                writer.close();
+            }
+        } catch (Exception e) {
+            System.out.println("Impossible de creer le fichier");
+        }
+	}
 	
 }

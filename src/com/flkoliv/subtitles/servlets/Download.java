@@ -48,6 +48,7 @@ public class Download extends HttpServlet {
 		/* Décode le nom de fichier récupéré, susceptible de contenir des espaces et autres caractères spéciaux, et prépare l'objet File */
 		fichierRequis = URLDecoder.decode( fichierRequis, "UTF-8");
 		File fichier = new File( chemin, fichierRequis );
+		File f = new File(fichierRequis);
 		        
 		/* Vérifie que le fichier existe bien */
 		if ( !fichier.exists() ) {
@@ -58,6 +59,7 @@ public class Download extends HttpServlet {
 		}
 		/* Récupère le type du fichier */
 		String type = getServletContext().getMimeType( fichier.getName() );
+		System.out.println(type);
 
 		/* Si le type de fichier est inconnu, alors on initialise un type par défaut */
 		if ( type == null ) {

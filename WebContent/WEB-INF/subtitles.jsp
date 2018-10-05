@@ -25,7 +25,7 @@
     			
 			</c:forEach>
         </select>
-        <input type="submit" name="submit" id="submit" value="choixFichier"/>
+        <input type="submit" name="submit" id="submit" value="Traduire"/>
         <input type="submit" name="submit" id="submit" value="Télécharger"/>
 	</form>
 	<form method="post" action="" enctype="multipart/form-data">
