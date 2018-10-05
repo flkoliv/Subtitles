@@ -8,6 +8,9 @@
 <meta charset="UTF-8">
 <title>Traduction</title>
 <link rel="stylesheet" media="screen" type="text/css" title="css" href="/Subtitles/ressources/style.css" />
+<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script type="text/javascript" src="/Subtitles/ressources/script.js"></script>
 
 </head>
 <body>
@@ -36,6 +39,8 @@
 	</c:forEach>
 	
 </form>
-
+<a href="javascript:" id="return-to-top"><i class="icon-chevron-up"></i></a>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script type="text/javascript" src="/Subtitles/ressources/script.js"></script>
 </body>
 </html>

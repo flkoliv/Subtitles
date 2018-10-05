@@ -15,7 +15,7 @@ import java.io.FileWriter;
 import java.io.IOException;;
 
 public class Film {
-	
+
 	private int id;
 	private String nom;
 	private String langueOriginale;
@@ -24,9 +24,9 @@ public class Film {
 	private int idLangueTraduction;
 	private String cheminFichier;
 	private ArrayList<Phrase> phrases = new ArrayList<Phrase>();
-	
-	private FilmDao filmDao; 
-	
+
+	private FilmDao filmDao;
+
 	public int getIdLangueOriginale() {
 		return idLangueOriginale;
 	}
@@ -35,61 +35,69 @@ public class Film {
 		this.idLangueOriginale = idLangueOriginale;
 	}
 
-	public Film(HttpServletRequest request,String cheminFichier) {
+	public Film(HttpServletRequest request, String cheminFichier) {
 		this.nom = request.getParameter("nomFilm");
 		this.langueOriginale = request.getParameter("langue");
 		this.cheminFichier = cheminFichier;
 		creerPhrases();
 		DaoFactory daoFactory = DaoFactory.getInstance();
-        this.filmDao = daoFactory.getFilmDao();
-        if (!this.filmDao.existe(this)) {
-        	this.filmDao.ajouter(this);
-        	request.setAttribute("message","Le nouveau fichier a été chargé !");
-        }else {
-        	request.setAttribute("message","Le film existe déjà !");
-        }
+		this.filmDao = daoFactory.getFilmDao();
+		if (!this.filmDao.existe(this)) {
+			this.filmDao.ajouter(this);
+			request.setAttribute("message", "Le nouveau fichier a été chargé !");
+		} else {
+			request.setAttribute("message", "Le film existe déjà !");
+		}
 	}
-	
+
 	public Film(HttpServletRequest request) {
 		DaoFactory daoFactory = DaoFactory.getInstance();
-        this.filmDao = daoFactory.getFilmDao();
+		this.filmDao = daoFactory.getFilmDao();
 		this.nom = request.getParameter("film");
 		this.langueTraduction = request.getParameter("langueDestination");
 		if (this.filmDao.existe(this)) {
-			 this.filmDao.charger(this);
-        }else {
-        	request.setAttribute("message","Le film n'existe pas !");
-        }
+			this.filmDao.charger(this);
+		} else {
+			request.setAttribute("message", "Le film n'existe pas !");
+		}
 	}
-	
+
 	public Film() {
-		
+
 	}
-	
+
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
+
 	public String getNom() {
 		return nom;
 	}
+
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
+
 	public String getLangueOriginale() {
 		return langueOriginale;
 	}
+
 	public void setLangueOriginale(String langueOriginale) {
 		this.langueOriginale = langueOriginale;
 	}
+
 	public String getLangueTraduction() {
 		return langueTraduction;
 	}
+
 	public void setLangueTraduction(String langueTraduction) {
 		this.langueTraduction = langueTraduction;
 	}
+
 	public int getIdLangueTraduction() {
 		return idLangueTraduction;
 	}
@@ -97,113 +105,116 @@ public class Film {
 	public void setIdLangueTraduction(int idLangueTraduction) {
 		this.idLangueTraduction = idLangueTraduction;
 	}
+
 	public String getNomFichier() {
 		return cheminFichier;
 	}
+
 	public void setNomFichier(String nomFichier) {
 		this.cheminFichier = nomFichier;
 	}
+
 	public ArrayList<Phrase> getPhrases() {
 		return phrases;
 	}
+
 	public void setPhrases(ArrayList<Phrase> phrases) {
 		this.phrases = phrases;
 	}
+
 	public String getCheminFichier() {
 		return cheminFichier;
 	}
+
 	public void setCheminFichier(String cheminFichier) {
 		this.cheminFichier = cheminFichier;
 	}
-	
-	
+
 	private void creerPhrases() {
-		try
-		{
-		    File f = new File (cheminFichier);
-		    FileReader fr = new FileReader (f);
-		    BufferedReader br = new BufferedReader (fr);
-		    try {
-		        String line = br.readLine();
-		        Phrase phrase = new Phrase();
-		        int compteur = 1;
-		        while (line != null) {
-		        	
-		        	if(line.length()==0) {
-		            	phrases.add(phrase);
-		        		phrase = new Phrase();
-		            	compteur = 0;
-		            }
-		        	if (compteur == 1) {
-          	           	line=line.replaceAll("[\\W]","");
-		            	phrase.setNumero(Integer.parseInt(line.trim()));
-		            }else if (compteur == 2 ) {
-		            	String[] t = line.split(" --> ");
-		            	phrase.setMinutageDebut(t[0]);
-		            	phrase.setMinutageFin(t[1]);
-		            }else if (compteur == 3) {
-		            	phrase.setTexteOriginal(line);
-		            }else if (compteur == 4) {
-		            	String ph = phrase.getTexteOriginal();
-		            	phrase.setTexteOriginal(ph + "\n" + line);
-		            }
-		            compteur++;
-		            line = br.readLine();
-		        }
-		        br.close();
-		        fr.close();
-		    }
-		    catch (IOException exception)
-		    {
-		        System.out.println ("Erreur lors de la lecture : " + exception.getMessage());
-		    }
-		}
-		catch (FileNotFoundException exception)
-		{
-		    System.out.println ("Le fichier n'a pas été trouvé");
+		try {
+			File f = new File(cheminFichier);
+			FileReader fr = new FileReader(f);
+			BufferedReader br = new BufferedReader(fr);
+			try {
+				String line = br.readLine();
+				Phrase phrase = new Phrase();
+				int compteur = 1;
+				while (line != null) {
+
+					if (line.length() == 0) {
+						phrases.add(phrase);
+						phrase = new Phrase();
+						compteur = 0;
+					}
+					if (compteur == 1) {
+						line = line.replaceAll("[\\W]", "");
+						phrase.setNumero(Integer.parseInt(line.trim()));
+					} else if (compteur == 2) {
+						String[] t = line.split(" --> ");
+						phrase.setMinutageDebut(t[0]);
+						phrase.setMinutageFin(t[1]);
+					} else if (compteur == 3) {
+						phrase.setTexteOriginal(line);
+					} else if (compteur == 4) {
+						String ph = phrase.getTexteOriginal();
+						phrase.setTexteOriginal(ph + "\n" + line);
+					}
+					compteur++;
+					line = br.readLine();
+				}
+				br.close();
+				fr.close();
+			} catch (IOException exception) {
+				System.out.println("Erreur lors de la lecture : " + exception.getMessage());
+			}
+		} catch (FileNotFoundException exception) {
+			System.out.println("Le fichier n'a pas été trouvé");
 		}
 	}
-	
-	
+
 	public void sauvegarder(HttpServletRequest request) {
 		DaoFactory daoFactory = DaoFactory.getInstance();
-        this.filmDao = daoFactory.getFilmDao();
-        for(int i = 0; i < phrases.size(); i++) {
-        	int j = phrases.get(i).getNumero();
-        	phrases.get(i).setTexteTraduit(request.getParameter("txtTraduit"+j));
-        	System.out.println(phrases.get(i).getTexteOriginal());
-        	System.out.println(phrases.get(i).getTexteTraduit());
-        }
-        filmDao.sauvegarder(this);
+		this.filmDao = daoFactory.getFilmDao();
+		for (int i = 0; i < phrases.size(); i++) {
+			int j = phrases.get(i).getNumero();
+			phrases.get(i).setTexteTraduit(request.getParameter("txtTraduit" + j));
+			System.out.println(phrases.get(i).getTexteOriginal());
+			System.out.println(phrases.get(i).getTexteTraduit());
+		}
+		filmDao.sauvegarder(this);
 	}
-	
-	public void creerFichier() {
-		final String chemin = "C:\\Users\\olivi\\eclipse-workspace\\Subtitles\\upload\\txt.txt";
-        final File fichier =new File(chemin); 
-        try {
-            // Creation du fichier
-            fichier .createNewFile();
-            // creation d'un writer (un écrivain)
-            final FileWriter writer = new FileWriter(fichier);
-            try {
-            	int j = 1;
-            	for(int i = 0; i < phrases.size(); i++) {
-            		if (!phrases.get(i).getTexteTraduit().equals("")) {
-            			writer.write(j+"\n");
-            			writer.write(phrases.get(i).getMinutageDebut()+" --> "+phrases.get(i).getMinutageFin()+"\n");
-                        writer.write(phrases.get(i).getTexteTraduit()+"\n"+"\n");
-                        j++;
-            		}
-            	
-            	}
-            	
-            } finally {
-                // quoiqu'il arrive, on ferme le fichier
-                writer.close();
-            }
-        } catch (Exception e) {
-            System.out.println("Impossible de creer le fichier");
-        }
+
+	public File creerFichier(String chemin) {
+
+		final File fichier = new File(chemin);
+		System.out.println(cheminFichier);
+		try {
+			// Creation du fichier
+			fichier.createNewFile();
+			// creation d'un writer (un écrivain)
+			final FileWriter writer = new FileWriter(fichier);
+			try {
+				int j = 1;
+				for (int i = 0; i < phrases.size(); i++) {
+					if (!phrases.get(i).getTexteTraduit().equals("")) {
+						writer.write(j + "\r\n");
+						writer.write(
+								phrases.get(i).getMinutageDebut() + " --> " + phrases.get(i).getMinutageFin() + "\r\n");
+						writer.write(phrases.get(i).getTexteTraduit() + "\r\n" + "\r\n");
+						j++;
+					}
+
+				}
+
+			} finally {
+				writer.close();
+				
+			}
+		} catch (Exception e) {
+			System.out.println("Impossible de creer le fichier");
+			return null;
+		}
+		return fichier;
 	}
-	
+
 }

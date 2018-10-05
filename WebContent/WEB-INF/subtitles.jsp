@@ -33,7 +33,7 @@
         <input type="text" name="nomFilm" id="nomFilm" placeholder="nom film" required>
         <input type="file" name="fichierFilm" id="fichierFilm" accept=".srt" placeholder="fichier film" required/>
         <input type="text" name="langue" id="langue" placeholder="langue" required>
-        <input type="submit" name="submit" id="submit" value="upload" />
+        <input type="submit" name="submit" id="submit" value="Upload"/>
         
 	</form>
 	${ !empty message ? message: '' }
