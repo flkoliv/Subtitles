@@ -11,10 +11,10 @@
 <body>
 <h1>SubTranslate</h1>
 	<form method="post" action="">
-    	<label for="film">Choix film : </label>
-        <select name="film">
+    	<fieldset class="choix" id="choix">
+    	<legend>Choix film :</legend>
+        <select name="film" id="listeFilms">
         	<c:forEach items="${ listFilms }" var="film" varStatus="status">
-    			
     			<option value="<c:out value="${ film.nom }" />"><c:out value="${ film.nom }" /></option>
 			</c:forEach>
         </select>
@@ -25,18 +25,36 @@
     			
 			</c:forEach>
         </select>
-        <input type="submit" name="submit" id="submit" value="Traduire"/>
-        <input type="submit" name="submit" id="submit" value="Télécharger"/>
+        <input type="submit" name="submit" id="submit" value="Traduire" class="bouton"/>
+        <input type="submit" name="submit" id="submit" value="Télécharger" class="bouton"/>
+        </fieldset>
 	</form>
 	<form method="post" action="" enctype="multipart/form-data">
-    	<label for="nom">Nouveau film : </label>
-        <input type="text" name="nomFilm" id="nomFilm" placeholder="nom film" required>
-        <input type="file" name="fichierFilm" id="fichierFilm" accept=".srt" placeholder="fichier film" required/>
-        <input type="text" name="langue" id="langue" placeholder="langue" required>
-        <input type="submit" name="submit" id="submit" value="Upload"/>
-        
+    	<fieldset class="choix">
+    		<legend>Nouveau film :</legend>
+        	<div>
+        	<input type="text" name="nomFilm" id="nomFilm" placeholder="nom film" required>
+        	
+        	
+        	<select name="langue">
+        	<c:forEach items="${ listLangues }" var="langue" varStatus="status">
+    			
+    				<option value="<c:out value="${ langue }" />"><c:out value="${ langue }" /></option>
+    			
+			</c:forEach>
+        </select>
+        	<input type="submit" name="submit" id="submit" value="Upload" class="bouton"/>
+        	</div>
+        	<input type="file" name="fichierFilm" id="fichierFilm" accept=".srt"  class="inputfile" required/>
+        	<label for="fichierFilm"> <span>Choisissez un fichier</span></label>
+        </fieldset>
 	</form>
-	${ !empty message ? message: '' }
-	
+	<div id="message">
+		<p id="msg">${ !empty message ? message: '' }</p>
+	</div>
+	<script
+		src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"
+		type="text/javascript"></script>
+	<script type="text/javascript" src="/Subtitles/ressources/script.js"></script>
 </body>
 </html> 

@@ -59,8 +59,13 @@ public class Subtitles extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		if (request.getParameter("submit").equals("Upload")) {// si clic sur upload
 			String cheminFichier = Upload.upload(request); // upload le fichier sur le serveur
-			film = new Film(request, cheminFichier);
-			doGet(request, response);
+			if (cheminFichier !=null) {
+				film = new Film(request, cheminFichier);
+				doGet(request, response);
+			} else {
+				request.setAttribute("message", "Fichier SRT non valide");
+				doGet(request, response);
+			}
 		} else if (request.getParameter("submit").equals("Traduire")) {// si clic sur choix film
 			film = new Film(request);
 
@@ -75,48 +80,49 @@ public class Subtitles extends HttpServlet {
 
 			}
 		} else if (request.getParameter("submit").equals("Télécharger")) {// si clic sur Télécharger
-			
+
 			film = new Film(request);
-			String chemin = this.getServletConfig().getInitParameter( "chemin" )+film.getNom().replaceAll(" ", "_")+"-"+film.getLangueTraduction()+".srt";
+			String chemin = this.getServletConfig().getInitParameter("chemin") + film.getNom().replaceAll(" ", "_")
+					+ "-" + film.getLangueTraduction() + ".srt";
 			File fichier = film.creerFichier(chemin);
-			if (fichier!=null) {
-				String type = getServletContext().getMimeType( fichier.getName() );
-				if ( type == null ) {
-				    type = "application/octet-stream";
+			if (fichier != null) {
+				String type = getServletContext().getMimeType(fichier.getName());
+				if (type == null) {
+					type = "application/octet-stream";
 				}
 				final int DEFAULT_BUFFER_SIZE = 10240; // 10 ko
 				/* Initialise la réponse HTTP */
 				response.reset();
-				response.setBufferSize( DEFAULT_BUFFER_SIZE );
-				response.setContentType( type );
-				response.setHeader( "Content-Length", String.valueOf( fichier.length() ) );
-				response.setHeader( "Content-Disposition", "attachment; filename=\"" + fichier.getName() + "\"" );
+				response.setBufferSize(DEFAULT_BUFFER_SIZE);
+				response.setContentType(type);
+				response.setHeader("Content-Length", String.valueOf(fichier.length()));
+				response.setHeader("Content-Disposition", "attachment; filename=\"" + fichier.getName() + "\"");
 				/* Prépare les flux */
 				BufferedInputStream entree = null;
 				BufferedOutputStream sortie = null;
 				try {
-				    /* Ouvre les flux */
+					/* Ouvre les flux */
 					final int TAILLE_TAMPON = 10240;
-				    entree = new BufferedInputStream( new FileInputStream( fichier ), TAILLE_TAMPON );
-				    sortie = new BufferedOutputStream( response.getOutputStream(), TAILLE_TAMPON );
-				    byte[] tampon = new byte[TAILLE_TAMPON];
+					entree = new BufferedInputStream(new FileInputStream(fichier), TAILLE_TAMPON);
+					sortie = new BufferedOutputStream(response.getOutputStream(), TAILLE_TAMPON);
+					byte[] tampon = new byte[TAILLE_TAMPON];
 					int longueur;
-					while ( ( longueur= entree.read( tampon ) ) > 0 ) {
-					    sortie.write( tampon, 0, longueur );
+					while ((longueur = entree.read(tampon)) > 0) {
+						sortie.write(tampon, 0, longueur);
 					}
-				 
-				    /* ... */
+
+					/* ... */
 				} finally {
-				    try {
-				        sortie.close();
-				    } catch ( IOException ignore ) {
-				    }
-				    try {
-				        entree.close();
-				    } catch ( IOException ignore ) {
-				    }
+					try {
+						sortie.close();
+					} catch (IOException ignore) {
+					}
+					try {
+						entree.close();
+					} catch (IOException ignore) {
+					}
 				}
-			}else {
+			} else {
 				request.setAttribute("message", "La traduction n'existe pas encore.");
 				doGet(request, response);
 			}

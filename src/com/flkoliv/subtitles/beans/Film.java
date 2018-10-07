@@ -140,15 +140,17 @@ public class Film {
 				Phrase phrase = new Phrase();
 				int compteur = 1;
 				while (line != null) {
-
-					if (line.length() == 0) {
-						phrases.add(phrase);
-						phrase = new Phrase();
-						compteur = 0;
-					}
+					System.out.println(line);
 					if (compteur == 1) {
 						line = line.replaceAll("[\\W]", "");
-						phrase.setNumero(Integer.parseInt(line.trim()));
+						if (line.length()==0) {
+							compteur--;
+						} else {
+							phrase = new Phrase();
+							
+							System.out.println("+"+line+"+");
+							phrase.setNumero(Integer.parseInt(line.trim()));
+						}
 					} else if (compteur == 2) {
 						String[] t = line.split(" --> ");
 						phrase.setMinutageDebut(t[0]);
@@ -156,8 +158,14 @@ public class Film {
 					} else if (compteur == 3) {
 						phrase.setTexteOriginal(line);
 					} else if (compteur == 4) {
-						String ph = phrase.getTexteOriginal();
-						phrase.setTexteOriginal(ph + "\n" + line);
+						if (!line.equals("")) {
+							String ph = phrase.getTexteOriginal();
+							phrase.setTexteOriginal(ph + "\n" + line);
+							compteur--;
+						}else {
+							compteur = 0;
+							phrases.add(phrase);
+						}
 					}
 					compteur++;
 					line = br.readLine();
@@ -208,7 +216,7 @@ public class Film {
 
 			} finally {
 				writer.close();
-				
+
 			}
 		} catch (Exception e) {
 			System.out.println("Impossible de creer le fichier");
