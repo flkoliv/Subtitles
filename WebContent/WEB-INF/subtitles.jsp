@@ -18,7 +18,7 @@
     			<option value="<c:out value="${ film.nom }" />"><c:out value="${ film.nom }" /></option>
 			</c:forEach>
         </select>
-        <select name="langueDestination">
+        <select name="langueDestination" title="Langue de destination">
         	<c:forEach items="${ listLangues }" var="langue" varStatus="status">
     			
     				<option value="<c:out value="${ langue }" />"><c:out value="${ langue }" /></option>
@@ -36,7 +36,7 @@
         	<input type="text" name="nomFilm" id="nomFilm" placeholder="nom film" required>
         	
         	
-        	<select name="langue">
+        	<select name="langue" title="Langue des sous-titres du fichier">
         	<c:forEach items="${ listLangues }" var="langue" varStatus="status">
     			
     				<option value="<c:out value="${ langue }" />"><c:out value="${ langue }" /></option>

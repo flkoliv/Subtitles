@@ -78,6 +78,9 @@ h1 {
 	width : 500px;
 	text-align: center;
 	display: none;
+	font-size: 1.30em;
+    font-weight: 300;
+    margin : 15px;
 }
 
 .inputfile {

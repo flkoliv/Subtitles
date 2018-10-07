@@ -24,7 +24,11 @@ setTimeout(function(){
 console.log($($('#listeFilms').contents().length));
 console.log($($('#listeFilms').contents()));
 if ($('#msg').text().length != 0)$('#message').show();
+if ($('#msg').text().substr($('#msg').length - 2) ==="!") {
+	$('#message').css("background-color", "#FFB6B8");
+}
 if ($('#listeFilms').contents().length <= 1)$('#choix').hide();
+
 
 	
 

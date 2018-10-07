@@ -44,7 +44,7 @@ public class Film {
 		this.filmDao = daoFactory.getFilmDao();
 		if (!this.filmDao.existe(this)) {
 			this.filmDao.ajouter(this);
-			request.setAttribute("message", "Le nouveau fichier a été chargé !");
+			request.setAttribute("message", "Le nouveau fichier a été chargé.");
 		} else {
 			request.setAttribute("message", "Le film existe déjà !");
 		}

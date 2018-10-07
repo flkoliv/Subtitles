@@ -9,27 +9,33 @@ public class DaoFactory {
     private String username;
     private String password;
 
-    DaoFactory(String url, String username, String password) {
+    private static DaoFactory instance = null;
+    
+    private DaoFactory(String url, String username, String password) {
         this.url = url;
         this.username = username;
         this.password = password;
     }
 
     public static DaoFactory getInstance() {
-        try {
+        
+        return instance;
+    }
+    
+    public static DaoFactory getInstance(String url,String username,String password ) {
+    	try {
             Class.forName("org.mariadb.jdbc.Driver");
         } catch (ClassNotFoundException e) {
 
         } 
-
-        DaoFactory instance = new DaoFactory(
-                "jdbc:mariadb://localhost:3306/subtitles", "root", "LoremIpsum05");
-        return instance;
+    	instance = new DaoFactory(url, username, password);
+    	return instance;
     }
-
+    
+    
+    
     public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(url, username, password);
-    	//return DriverManager.getConnection("jdbc:mariadb:localhost:3306/subtitles?user=root&password=LoremIpsum05");
     }
 
     // Récupération du Dao
@@ -38,4 +44,6 @@ public class DaoFactory {
         
         
     }
+
+	
 }

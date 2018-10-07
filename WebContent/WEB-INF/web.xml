@@ -5,6 +5,18 @@
         <param-name>chemin</param-name>
         <param-value>C:\Users\olivi\eclipse-workspace\Subtitles\upload\</param-value>
 </context-param>
+<context-param>
+        <param-name>urlDb</param-name>
+        <param-value>jdbc:mariadb://localhost:3306/subtitles</param-value>
+</context-param>
+<context-param>
+        <param-name>identifiantDb</param-name>
+        <param-value>root</param-value>
+</context-param>
+<context-param>
+        <param-name>motDePasseDb</param-name>
+        <param-value>LoremIpsum05</param-value>
+</context-param>
 <servlet>
    	<servlet-name>Subtitles</servlet-name>
    	<servlet-class>com.flkoliv.subtitles.servlets.Subtitles</servlet-class>

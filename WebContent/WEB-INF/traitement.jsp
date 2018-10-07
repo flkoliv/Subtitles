@@ -28,7 +28,7 @@
 		<div class="menu">
 		
 			<input type="submit" name="submit" id="submit" value="Sauvegarder" class="bouton">
-			<input type="button" name="annuler" id="annuler" value="Annuler" class="bouton">
+			<input type="submit" name="submit" id="submit" value="Annuler" class="bouton">
 			<input type="button" name="retour" id="return-to-top" value="En haut" class="bouton">
 			
 		

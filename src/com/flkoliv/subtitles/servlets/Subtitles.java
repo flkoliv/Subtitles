@@ -33,7 +33,10 @@ public class Subtitles extends HttpServlet {
 	}
 
 	public void init() throws ServletException {
-		DaoFactory daoFactory = DaoFactory.getInstance();
+		String url = this.getServletContext().getInitParameter("urlDb");
+		String id = this.getServletContext().getInitParameter("identifiantDb");
+		String mdp = this.getServletContext().getInitParameter("motDePasseDb");
+		DaoFactory daoFactory = DaoFactory.getInstance(url,id,mdp);
 		this.filmDao = daoFactory.getFilmDao();
 	}
 
@@ -63,14 +66,14 @@ public class Subtitles extends HttpServlet {
 				film = new Film(request, cheminFichier);
 				doGet(request, response);
 			} else {
-				request.setAttribute("message", "Fichier SRT non valide");
+				request.setAttribute("message", "Fichier SRT non valide !");
 				doGet(request, response);
 			}
 		} else if (request.getParameter("submit").equals("Traduire")) {// si clic sur choix film
 			film = new Film(request);
 
 			if (film.getIdLangueOriginale() == film.getIdLangueTraduction()) {
-				request.setAttribute("message", "Vous avez choisi la même langue que la langue originale");
+				request.setAttribute("message", "Vous avez choisi la même langue que la langue originale !");
 				doGet(request, response);
 			} else {
 				request.setAttribute("film", film);
@@ -82,7 +85,7 @@ public class Subtitles extends HttpServlet {
 		} else if (request.getParameter("submit").equals("Télécharger")) {// si clic sur Télécharger
 
 			film = new Film(request);
-			String chemin = this.getServletConfig().getInitParameter("chemin") + film.getNom().replaceAll(" ", "_")
+			String chemin = this.getServletContext().getInitParameter("chemin") + film.getNom().replaceAll(" ", "_")
 					+ "-" + film.getLangueTraduction() + ".srt";
 			File fichier = film.creerFichier(chemin);
 			if (fichier != null) {
@@ -123,14 +126,17 @@ public class Subtitles extends HttpServlet {
 					}
 				}
 			} else {
-				request.setAttribute("message", "La traduction n'existe pas encore.");
+				request.setAttribute("message", "La traduction n'existe pas encore !");
 				doGet(request, response);
 			}
 
 		} else if (request.getParameter("submit").equals("Sauvegarder")) {// si clic sur sauvegarder
 			film.sauvegarder(request);
-			request.setAttribute("message", "Sauvegarde effectuée");
+			request.setAttribute("message", "Sauvegarde effectuée.");
 			doGet(request, response);
-		}
+		} else if (request.getParameter("submit").equals("Annuler")) {// si clic sur annuler
+			request.setAttribute("message", "Modifications annulés.");
+			doGet(request, response);
+		} 
 	}
 }
