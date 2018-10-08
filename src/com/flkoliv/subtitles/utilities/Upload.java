@@ -18,25 +18,14 @@ public class Upload {
 	public static final int TAILLE_TAMPON = 10240;
 
 	public static String upload(HttpServletRequest request) throws IOException, ServletException {
-		// On récupère le champ description comme d'habitude
-		// String description = request.getParameter("description");
-		// request.setAttribute("description", description);
-		String CHEMIN_FICHIERS = request.getServletContext().getInitParameter("chemin"); // recupère le chemin dans
-																							// web.xml
-		// On récupère le champ du fichier
-		Part part = request.getPart("fichierFilm");
-		// On vérifie qu'on a bien reçu un fichier
-		String nomFichier = getNomFichier(part);
-		// Si on a bien un fichier
-		if (nomFichier != null && !nomFichier.isEmpty()) {
-			//String nomChamp = part.getName();
-			// Corrige un bug du fonctionnement d'Internet Explorer
+		// recupère le chemin dans web.xml
+		String CHEMIN_FICHIERS = request.getServletContext().getInitParameter("chemin");
+		Part part = request.getPart("fichierFilm");// On récupère le champ du fichier
+		String nomFichier = getNomFichier(part);// On vérifie qu'on a bien reçu un fichier
+		if (nomFichier != null && !nomFichier.isEmpty()) {// Si on a bien un fichier
 			nomFichier = nomFichier.substring(nomFichier.lastIndexOf('/') + 1)
 					.substring(nomFichier.lastIndexOf('\\') + 1);
-
-			// On écrit définitivement le fichier sur le disque
 			ecrireFichier(part, nomFichier, CHEMIN_FICHIERS);
-			// request.setAttribute(nomChamp, nomFichier);
 		}
 		File fichier = new File(CHEMIN_FICHIERS + nomFichier);
 		if (fichierValide(fichier)) {
@@ -81,20 +70,15 @@ public class Upload {
 	}
 
 	private static boolean fichierValide(File f) {
-
 		try {
-
 			FileReader fr = new FileReader(f);
 			String line;
 			try {
-
 				BufferedReader br = new BufferedReader(fr);
 				line = br.readLine();
 				int compteurPhrase = 1;
 				int i = 1;
 				while (line != null) {
-					
-					System.out.println(line);
 					if (i == 1) { // ligne des numéro de phrase
 						line = line.replaceAll("[\\W]", "");
 						if (!line.equals("")) {
@@ -112,23 +96,22 @@ public class Upload {
 								br.close();
 								return false;
 							}
-						}else {
+						} else {
 							i--;
 						}
-						
-					} else if (i == 2) {
+					} else if (i == 2) { // ligne du timing
 						if (!line.matches("^\\d\\d+:[0-5]\\d:[0-5]\\d,\\d{3} --> \\d\\d+:[0-5]\\d:[0-5]\\d,\\d{3}$")) {
 							System.out.println(i + " " + line);
 							br.close();
 							return false;
 						}
-					} else if (i == 3) {
+					} else if (i == 3) { // première ligne de texte
 						if (line.equals("")) {
 							System.out.println(i + " " + line);
 							br.close();
 							return false;
 						}
-					} else if (i == 4) {
+					} else if (i == 4) { // ligne de texte suivante
 						if (line.equals("")) {
 							i = 0;
 						} else {
@@ -137,25 +120,17 @@ public class Upload {
 					}
 					i++;
 					line = br.readLine();
-
 				}
 				br.close();
 			} catch (IOException e) {
-
 				e.printStackTrace();
-
 				return false;
-
 			}
 		} catch (FileNotFoundException e) {
-
 			e.printStackTrace();
-
 			return false;
 		}
-		System.out.println("fichier valide");
 		return true;
-
 	}
 
 }
